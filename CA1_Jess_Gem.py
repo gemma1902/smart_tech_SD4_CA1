@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow.keras
@@ -17,13 +19,32 @@ import pickle
 import pandas as pd
 import csv
 
-VAL_PATH = "D:/smart_tech/tiny-imagenet-200/tiny-imagenet-200/val/val_annotations.txt"
 
+# Main Data Directory
+DATA = "F:/College/Year 4/Smart Tech/JessicaSavage_GemmaRegan_CA1/tiny-imagenet-200"
 
-with open(VAL_PATH, 'r') as f:
-    reader = csv.reader(f)
-    for row in reader:
-        print(row)
+LABELS = open(os.path.join(DATA, 'words.txt'), 'r')
+labels_file = LABELS.readlines()
+label_data = {}
+for line in labels_file:
+    words = line.split('\t')
+    label_data[words[0]] = words[1]
+LABELS.close()
 
+# Directory to datasets
+TRAIN = os.path.join(DATA, 'train')
+VAL = os.path.join(DATA, 'val')
+TEST = os.path.join(DATA, 'test')
+
+val_annotations = open(os.path.join(VAL, 'val_annotations.txt'), 'r')
+val_file = val_annotations.readlines()
+
+val_data = {}
+for line in val_file:
+    words = line.split('\t')
+    val_data[words[0]] = words[1]
+val_annotations.close()
+
+print(label_data)
 
 
