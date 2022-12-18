@@ -1,7 +1,7 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow.keras
-from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
@@ -17,12 +17,30 @@ import pickle
 import pandas as pd
 import csv
 
-VAL_PATH = "D:/smart_tech/tiny-imagenet-200/tiny-imagenet-200/val/val_annotations.txt"
-# VAL_PATH = "D:/smart_tech/tiny-imagenet-200/val"
-# TRAIN_PATH = "D:/smart_tech/tiny-imagenet-200/train"
-# TEST_PATH = "D:/smart_tech/tiny-imagenet-200/test"
-# WNIDS_PATH = "D:/smart_tech/tiny-imagenet-200/wnids.txt"
-# WORDS_PATH = "D:/smart_tech/tiny-imagenet-200/words.txt"
+def grayscale(image):
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    return image
+
+# Brightens the Image
+def equalize(image):
+    # Only works on grayscaled images
+    image = cv2.equalizeHist(image)
+    return image
+
+def preprocessing(image):
+    image = grayscale(image)
+    image = equalize(image)
+    #flatten Image
+    image = image/255
+    return image
+
+DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
+VAL_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
+# VAL_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val"
+# TRAIN_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/train"
+# TEST_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/test"
+WNIDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/wnids.txt"
+# WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
 # num_classes=200
 
 LABELS = open(os.path.join(DATA, 'words.txt'), 'r')
