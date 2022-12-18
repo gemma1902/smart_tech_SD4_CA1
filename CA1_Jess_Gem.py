@@ -68,25 +68,25 @@ for file in os.listdir(TEST_PATH):
     h = os.path.join(TEST_PATH,file)
     if os.path.isfile(h):
         test_data.append(h)
-print(test_data[0])
-img = cv2.imread(test_data[4])
-plt.imshow(img)
-plt.show()
+#print(test_data[0])
+#img = cv2.imread(test_data[4])
+#plt.imshow(img)
+#plt.show()
 
 
 # LOAD TRAINING DATA
 train_data = []
-for files in os.listdir(TRAIN_PATH):
-    j = os.path.join(TRAIN_PATH, files)
-    if (os.path.join(j, "images")):
-        for file in os.listdir(j):
-            k = os.path.join(j, file)
-            if os.path.isfile(k):
-                train_data.append(k)
+for file in os.listdir(TRAIN_PATH):
+    h = os.path.join(TRAIN_PATH,file)
+    j = os.path.join(h,"images")
+    for files in os.listdir(j):
+        k = os.path.join(j, files)
+        if os.path.isfile(k):
+            train_data.append(k)
 print(train_data[0])
-#img = cv2.imread(train_data[4])
-#plt.imshow(img)
-#plt.show()
+img = cv2.imread(train_data[4])
+plt.imshow(img)
+plt.show()
 
 
 #LOAD IN DATA FROM WNIDS TEXT FILE
