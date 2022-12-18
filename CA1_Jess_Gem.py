@@ -55,14 +55,14 @@ for line in WNIDS_file:
     WNIDS_data.append(words)
 WNIDS.close()
 
-# LOAD VALIDATION DATA
+# LOAD X_VALIDATION DATA
 val_data = []
 for filename in os.listdir(VAL_PATH):
     f = os.path.join(VAL_PATH,filename)
     if os.path.isfile(f):
         val_data.append(f)
 
-# LOAD TEST DATA
+# LOAD X_TEST DATA
 test_data = []
 for file in os.listdir(TEST_PATH):
     h = os.path.join(TEST_PATH,file)
@@ -75,18 +75,23 @@ for file in os.listdir(TEST_PATH):
 
 
 # LOAD TRAINING DATA
-train_data = []
+X_train_data = []
+y_train_data = []
 for file in os.listdir(TRAIN_PATH):
+    y_train_data.append(file)
     h = os.path.join(TRAIN_PATH,file)
     j = os.path.join(h,"images")
     for files in os.listdir(j):
         k = os.path.join(j, files)
         if os.path.isfile(k):
-            train_data.append(k)
-print(train_data[0])
-img = cv2.imread(train_data[4])
-plt.imshow(img)
-plt.show()
+            X_train_data.append(k)
+
+X_train = np.array([X_train_data])
+y_train = np.array([y_train_data])
+#print(y_train[0])
+#img = cv2.imread(x_train[4])
+#plt.imshow(img)
+#plt.show()
 
 
 #LOAD IN DATA FROM WNIDS TEXT FILE
@@ -113,3 +118,10 @@ val_file = val_annotations.readlines()
 #       wnid_to_words[wnid] = [w.strip() for w in words.split(',')]
 # class_names = [wnid_to_words[wnid] for wnid in wnids]
 
+# Print number of Images
+print(X_train.shape)
+print(y_train.shape)
+
+
+# Is Number of labels == number of images
+assert(X_train.shape[0] == y_train.shape[0]), "The number of training images is not equal to the number of training labels"
