@@ -38,10 +38,10 @@ def preprocessing(image):
 
 DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
 VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
-VAL_PATH = "F:/College/Year 4/Smart Tech/JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/images"
+VAL_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\val\\images"
 TRAIN_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\train"
-# TEST_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/test"
-WNIDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/wnids.txt"
+TEST_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\test\\images"
+WNIDS_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\wnids.txt"
 # WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
 # num_classes=200
 
@@ -62,25 +62,31 @@ for filename in os.listdir(VAL_PATH):
     if os.path.isfile(f):
         val_data.append(f)
 
-#print(val_data[1])
-#img = cv2.imread(val_data[4])
-#plt.imshow(img)
-#plt.show()
+# LOAD TEST DATA
+test_data = []
+for file in os.listdir(TEST_PATH):
+    h = os.path.join(TEST_PATH,file)
+    if os.path.isfile(h):
+        test_data.append(h)
+print(test_data[0])
+img = cv2.imread(test_data[4])
+plt.imshow(img)
+plt.show()
 
 
 # LOAD TRAINING DATA
 train_data = []
 for files in os.listdir(TRAIN_PATH):
     j = os.path.join(TRAIN_PATH, files)
-    for file in os.listdir(j):
-        if(os.path.join(j, "images")):
+    if (os.path.join(j, "images")):
+        for file in os.listdir(j):
             k = os.path.join(j, file)
             if os.path.isfile(k):
                 train_data.append(k)
 print(train_data[0])
-img = cv2.imread(train_data[4])
-plt.imshow(img)
-plt.show()
+#img = cv2.imread(train_data[4])
+#plt.imshow(img)
+#plt.show()
 
 
 #LOAD IN DATA FROM WNIDS TEXT FILE
