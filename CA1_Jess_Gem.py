@@ -1,23 +1,24 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import tensorflow.keras
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import Flatten
-from keras.layers.convolutional import Conv2D
-from keras.layers.convolutional import MaxPooling2D
-from keras.utils.np_utils import to_categorical
-import random
-import requests
+# import tensorflow.keras
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import Dense
+# from tensorflow.keras.optimizers import Adam
+# from tensorflow.keras.layers import Flatten
+# from keras.layers.convolutional import Conv2D
+# from keras.layers.convolutional import MaxPooling2D
+# from keras.utils.np_utils import to_categorical
+# import random
+# import requests
 from PIL import Image
+from numpy import asarray
 import cv2
-import pickle
-import pandas as pd
-import csv
-import torchvision.datasets as datasets
-import torch.utils.data as data
+# import pickle
+# import pandas as pd
+# import csv
+# import torchvision.datasets as datasets
+# import torch.utils.data as data
 
 def grayscale(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -36,14 +37,14 @@ def preprocessing(image):
     image = image/255
     return image
 
-DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
-VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
-VAL_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\val\\images"
-TRAIN_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\train"
-TEST_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\test\\images"
-WNIDS_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\wnids.txt"
-# WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
-# num_classes=200
+DATA = "D:/smart_tech/tiny-imagenet-200"
+VAL_ANNOTATIONS_PATH = "D:/smart_tech/tiny-imagenet-200/val/val_annotations.txt"
+VAL_PATH = "D:/smart_tech/tiny-imagenet-200/val/images"
+TRAIN_PATH = "D:/smart_tech/tiny-imagenet-200/train"
+TEST_PATH = "D:/smart_tech/tiny-imagenet-200/test/images"
+WNIDS_PATH = "D:/smart_tech/tiny-imagenet-200/wnids.txt"
+WORDS_PATH = "D:/smart_tech/tiny-imagenet-200/words.txt"
+path = "D:/smart_tech/tiny-imagenet-200/"
 
 
 # LOAD WNIDS INTO ARRAY
@@ -55,43 +56,50 @@ for line in WNIDS_file:
     WNIDS_data.append(words)
 WNIDS.close()
 
-# LOAD X_VALIDATION DATA
-val_data = []
+# LOAD VALIDATION DATA
+X_val = []
 for filename in os.listdir(VAL_PATH):
     f = os.path.join(VAL_PATH,filename)
     if os.path.isfile(f):
-        val_data.append(f)
+        img = Image.open(f)
+        X_val_numpy_data = asarray(img)
+        X_val.append(X_val_numpy_data)
 
-# LOAD X_TEST DATA
-test_data = []
+# LOAD TEST DATA
+X_test = []
 for file in os.listdir(TEST_PATH):
     h = os.path.join(TEST_PATH,file)
     if os.path.isfile(h):
-        test_data.append(h)
-#print(test_data[0])
-#img = cv2.imread(test_data[4])
-#plt.imshow(img)
-#plt.show()
+        img = Image.open(h)
+        X_test_numpy_data = asarray(img)
+        X_test.append(X_test_numpy_data)
+
+# print(test_data[0])
+# img = cv2.imread(test_data[4])
+# plt.imshow(img)
+# plt.show()
+
 
 
 # LOAD TRAINING DATA
-X_train_data = []
-y_train_data = []
+X_train = []
 for file in os.listdir(TRAIN_PATH):
-    y_train_data.append(file)
     h = os.path.join(TRAIN_PATH,file)
     j = os.path.join(h,"images")
     for files in os.listdir(j):
         k = os.path.join(j, files)
         if os.path.isfile(k):
-            X_train_data.append(k)
+            img = Image.open(k)
+            X_train_numpy_data = asarray(img)
+            X_train.append(X_train_numpy_data)
+            # print(numpydata)
 
-X_train = np.array([X_train_data])
-y_train = np.array([y_train_data])
-#print(y_train[0])
-#img = cv2.imread(x_train[4])
-#plt.imshow(img)
-#plt.show()
+
+
+# print(X_train[0])
+# img = cv2.imread(X_train[4])
+# plt.imshow(img)
+# plt.show()
 
 
 #LOAD IN DATA FROM WNIDS TEXT FILE
@@ -106,8 +114,17 @@ TEST = os.path.join(DATA, 'test')
 pair = {}
 for i, wnid in enumerate(wnids): #Loop through and assign label
     pair[wnid] = i
-val_annotations = open(os.path.join(VAL, 'val_annotations.txt'), 'r')
-val_file = val_annotations.readlines()
+
+
+y_val = []
+with open(VAL_ANNOTATIONS_PATH, "r") as file:
+    val_y = file.readlines()
+    for line in val_y:
+        words = line.split()
+        val_label = words[1]
+        y_val.append(val_label)
+
+
 
 #print(label_data)
 
@@ -118,10 +135,13 @@ val_file = val_annotations.readlines()
 #       wnid_to_words[wnid] = [w.strip() for w in words.split(',')]
 # class_names = [wnid_to_words[wnid] for wnid in wnids]
 
-# Print number of Images
+# d1=zip(X_val, y_val)
+# # print (d1)#Output:<zip object at 0x01149528>
+# #Converting zip object to dict using dict() contructor.
+# print (dict(d1))
+
+
+# DATA_PREPROCESSING
 print(X_train.shape)
-print(y_train.shape)
-
-
-# Is Number of labels == number of images
-assert(X_train.shape[0] == y_train.shape[0]), "The number of training images is not equal to the number of training labels"
+# print(X_val.shape)
+# print(X_test.shape)
