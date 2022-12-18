@@ -83,7 +83,9 @@ for file in os.listdir(TEST_PATH):
 
 # LOAD TRAINING DATA
 X_train = []
+y_train = []
 for file in os.listdir(TRAIN_PATH):
+    y_train.append(file)
     h = os.path.join(TRAIN_PATH,file)
     j = os.path.join(h,"images")
     for files in os.listdir(j):
