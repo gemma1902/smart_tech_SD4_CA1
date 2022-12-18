@@ -16,6 +16,8 @@ import cv2
 import pickle
 import pandas as pd
 import csv
+import torchvision.datasets as datasets
+import torch.utils.data as data
 
 def grayscale(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -35,21 +37,40 @@ def preprocessing(image):
     return image
 
 DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
-VAL_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
-# VAL_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val"
-# TRAIN_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/train"
+VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
+VAL_PATH = "F:/College/Year 4/Smart Tech/JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/images"
+TRAIN_PATH = "F:/College/Year 4/Smart Tech/JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/train"
 # TEST_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/test"
 WNIDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/wnids.txt"
 # WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
 # num_classes=200
 
-LABELS = open(os.path.join(DATA, 'words.txt'), 'r')
-labels_file = LABELS.readlines()
-label_data = {}
-for line in labels_file:
+
+# LOAD WNIDS INTO ARRAY
+WNIDS = open(os.path.join(DATA, 'wnids.txt'), 'r')
+WNIDS_file = WNIDS.readlines()
+WNIDS_data = []
+for line in WNIDS_file:
     words = line.split('\t')
-    label_data[words[0]] = words[1]
-LABELS.close()
+    WNIDS_data.append(words)
+WNIDS.close()
+
+# LOAD VALIDATION DATA
+val_data = []
+for filename in os.listdir(VAL_PATH):
+    f = os.path.join(VAL_PATH,filename)
+    if os.path.isfile(f):
+        val_data.append(f)
+
+#print(val_data[1])
+#img = cv2.imread(val_data[4])
+#plt.imshow(img)
+#plt.show()
+
+
+# LOAD VALIDATION DATA
+#val_dataset = datasets.ImageFolder(VAL_PATH)
+#print("VALIDATION DATASET SIZE", len(val_dataset))
 
 #LOAD IN DATA FROM WNIDS TEXT FILE
 with open(WNIDS_PATH, "r") as file:
@@ -72,7 +93,7 @@ for line in val_file:
     val_data[words[0]] = words[1]
 val_annotations.close()
 
-print(label_data)
+#print(label_data)
 
 #Use words.txt to get names for each class  #not working fully
 # with open(WORDS_PATH, 'r') as f:
