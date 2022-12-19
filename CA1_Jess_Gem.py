@@ -47,6 +47,8 @@ def gaussianBlur(image):
 
 
 
+
+
 # def leNet_model():
 #     model = Sequential()
 #     model.add(Conv2D(60, (5, 5), input_shape=(64, 64, 1), activation='relu'))  # 30 = number of filters 5x5 = kernal 32x32 === 28x28 output
@@ -73,14 +75,14 @@ def gaussianBlur(image):
 
 DATA = "D:/smart_tech/tiny-imagenet-200"
 VAL_ANNOTATIONS_PATH = "D:/smart_tech/tiny-imagenet-200/val/val_annotations.txt"
-VAL_PATH = "D:/smart_tech/tiny-imagenet-200/val/images"
-TRAIN_PATH = "D:/smart_tech/tiny-imagenet-200/train"
+VAL_PATH = "D:\\smart_tech\\tiny-imagenet-200\\val\\images"
+TRAIN_PATH = "D:\\smart_tech\\tiny-imagenet-200\\train"
 TRAIN_PATH = "D:\\smart_tech\\tiny-imagenet-200\\train\\"
-TEST_PATH = "D:/smart_tech/tiny-imagenet-200/test/images"
-WNIDS_PATH = "D:/smart_tech/tiny-imagenet-200/wnids.txt"
-WORDS_PATH = "D:/smart_tech/tiny-imagenet-200/words.txt"
-BOXES_PATH = "D:/smart_tech/tiny-imagenet-200/boxes.txt"
-path = "D:/smart_tech/tiny-imagenet-200/"
+TEST_PATH = "D:\\smart_tech\\tiny-imagenet-200\\test\\images"
+WNIDS_PATH = "D:\\smart_tech\\tiny-imagenet-200\\wnids.txt"
+WORDS_PATH = "D:\\smart_tech\\tiny-imagenet-200\\words.txt"
+# BOXES_PATH = "D:/smart_tech/tiny-imagenet-200/boxes.txt"
+# path = "D:/smart_tech/tiny-imagenet-200/"
 num_classes= 200
 
 
@@ -95,6 +97,8 @@ pair = {}
 for i, wnid in enumerate(wnids):  # Loop through and assign label
     pair[wnid] = i
 
+print(pair)
+
 # print(type(WORDS_PATH))
 # get name for each class
 with open(WORDS_PATH, 'r') as f:
@@ -102,7 +106,14 @@ with open(WORDS_PATH, 'r') as f:
     for wnid, words in wnid_to_words.items():
       wnid_to_words[wnid] = [w.strip() for w in words.split(',')]
 class_names = [wnid_to_words[wnid] for wnid in wnids]
+# print(type(class_names))
 
+class_labels = {}
+with open(WORDS_PATH, 'r') as f:
+    for line in f:
+        label, name = line.strip().split('\t')
+        class_labels[label] = name
+print(class_labels)
 
 
 # load in training data
@@ -142,8 +153,9 @@ for file in os.listdir(TRAIN_PATH):
             # print(X_train.shape)
             # print(" x train ====== ", type(X_train))
 X_train = np.array(X_train_data)
-print("X_TRAIN SHAPE : ", X_train.shape)
+# print("X_TRAIN SHAPE : ", X_train.shape)
 #print("Y_TRAIN : ", y_train)
+
 
 #load in validation data
 X_val_data = []
@@ -185,6 +197,15 @@ X_test = np.array(X_test_data)
 print("X_TRAIN SHAPE : ", X_train.shape)
 print("X_VAL SHAPE : ", X_val.shape)
 print("X_TEST SHAPE : ", X_test.shape)
+
+#Normalise data
+X_train = X_train / 255
+X_test = X_test / 255
+
+print("normalise: ", X_train)
+print(X_test)
+
+
 
 # Is Number of labels == number of images
 assert(X_train.shape[0] == y_train.shape[0]), "the number of training images is not equal to the number of training labels"
