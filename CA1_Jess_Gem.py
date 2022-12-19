@@ -1,15 +1,15 @@
 import glob
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-# import tensorflow.keras
-# from tensorflow.keras.models import Sequential
-# from tensorflow.keras.layers import Dense
-# from tensorflow.keras.optimizers import Adam
-# from tensorflow.keras.layers import Flatten
+# import matplotlib.pyplot as plt
+# import keras
+# from keras.models import Sequential
+# from keras.layers import Dense
+# from keras.optimizers import Adam
+# from keras.layers import Flatten
 # from keras.layers.convolutional import Conv2D
 # from keras.layers.convolutional import MaxPooling2D
-from keras.utils.np_utils import to_categorical
+# # from keras.utils.np_utils import to_categorical
 # import random
 # import requests
 from PIL import Image
@@ -18,6 +18,7 @@ import cv2
 # import pickle
 # import pandas as pd
 
+#GRAYSCALE
 def grayscale(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     return image
@@ -37,6 +38,14 @@ def preprocessing(image):
     image = image / 255
     return image
 
+def gaussianBlur(image):
+    kernel_size = (5, 5)
+    kernel = cv2.getGaussianKernel(kernel_size[0], 0)
+    kernel = kernel * kernel.T
+    image_blurred = cv2.filter2D(image, -1, kernel)
+    return image_blurred
+
+
 
 # def leNet_model():
 #     model = Sequential()
@@ -53,14 +62,26 @@ def preprocessing(image):
 #     return model
 
 
-DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
-VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
-VAL_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\val\\images"
-TRAIN_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\train"
-TEST_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\test\\images"
-WNIDS_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\wnids.txt"
-WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
-num_classes=200
+# DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
+# VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
+# VAL_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\val\\images"
+# TRAIN_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\train"
+# TEST_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\test\\images"
+# WNIDS_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\wnids.txt"
+# WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
+# num_classes=200
+
+DATA = "D:/smart_tech/tiny-imagenet-200"
+VAL_ANNOTATIONS_PATH = "D:/smart_tech/tiny-imagenet-200/val/val_annotations.txt"
+VAL_PATH = "D:/smart_tech/tiny-imagenet-200/val/images"
+TRAIN_PATH = "D:/smart_tech/tiny-imagenet-200/train"
+TRAIN_PATH = "D:\\smart_tech\\tiny-imagenet-200\\train\\"
+TEST_PATH = "D:/smart_tech/tiny-imagenet-200/test/images"
+WNIDS_PATH = "D:/smart_tech/tiny-imagenet-200/wnids.txt"
+WORDS_PATH = "D:/smart_tech/tiny-imagenet-200/words.txt"
+BOXES_PATH = "D:/smart_tech/tiny-imagenet-200/boxes.txt"
+path = "D:/smart_tech/tiny-imagenet-200/"
+num_classes= 200
 
 
 
@@ -121,7 +142,7 @@ for file in os.listdir(TRAIN_PATH):
             # print(X_train.shape)
             # print(" x train ====== ", type(X_train))
 X_train = np.array(X_train_data)
-#print("X_TRAIN SHAPE : ", X_train.shape)
+print("X_TRAIN SHAPE : ", X_train.shape)
 #print("Y_TRAIN : ", y_train)
 
 #load in validation data
