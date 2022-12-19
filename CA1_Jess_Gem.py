@@ -144,8 +144,14 @@ for file in os.listdir(TRAIN_PATH):
         img = Image.open(k).convert('RGB')
         label, img_num = files.split('_')
         # print(np.array(img).shape)
+
+        #map class label to corresposnding class name
+        class_name = class_labels[label]
+        print("LINKING IMAGES", f'{file}: {class_name}')
+
         X_train_data.append(np.array(img))
         y_train.append(file)
+
         # if os.path.isfile(k):
         #     img = Image.open(k)
         #     X_train_numpy_data = np.asarray(img)
@@ -159,6 +165,8 @@ X_train = np.array(X_train_data)
 # print("X_TRAIN SHAPE : ", X_train.shape)
 #print("Y_TRAIN : ", y_train)
 
+class_name = class_labels[label]
+print("LINKING IMAGES", f'{file}: {class_name}')
 
 #load in validation data
 X_val_data = []
