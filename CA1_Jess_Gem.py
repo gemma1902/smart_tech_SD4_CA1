@@ -116,6 +116,8 @@ with open(WORDS_PATH, 'r') as f:
 print(class_labels)
 
 
+
+
 # load in training data
 X_train_data = []
 y_train = []
@@ -140,6 +142,7 @@ for file in os.listdir(TRAIN_PATH):
     for files in os.listdir(j):
         k = os.path.join(j, files)
         img = Image.open(k).convert('RGB')
+        label, img_num = files.split('_')
         # print(np.array(img).shape)
         X_train_data.append(np.array(img))
         y_train.append(file)
