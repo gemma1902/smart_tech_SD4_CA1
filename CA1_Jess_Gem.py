@@ -15,13 +15,8 @@ from keras.utils.np_utils import to_categorical
 from PIL import Image
 from numpy import asarray
 import cv2
-
-
 # import pickle
 # import pandas as pd
-# import csv
-# import torchvision.datasets as datasets
-# import torch.utils.data as data
 
 def grayscale(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -43,16 +38,14 @@ def preprocessing(image):
     return image
 
 
-DATA = "D:/smart_tech/tiny-imagenet-200"
-VAL_ANNOTATIONS_PATH = "D:/smart_tech/tiny-imagenet-200/val/val_annotations.txt"
-VAL_PATH = "D:/smart_tech/tiny-imagenet-200/val/images"
-TRAIN_PATH = "D:\\smart_tech\\tiny-imagenet-200\\train\\"
-TEST_PATH = "D:/smart_tech/tiny-imagenet-200/test/images"
-WNIDS_PATH = "D:/smart_tech/tiny-imagenet-200/wnids.txt"
-WORDS_PATH = "D:/smart_tech/tiny-imagenet-200/words.txt"
-BOXES_PATH = "D:/smart_tech/tiny-imagenet-200/boxes.txt"
-path = "D:/smart_tech/tiny-imagenet-200/"
-num_classes= 200
+DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
+VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
+VAL_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\val\\images"
+TRAIN_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\train"
+TEST_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\test\\images"
+WNIDS_PATH = "F:\\College\\Year 4\\Smart Tech\\JessicaSavage_GemmaRegan_SmartTech_CA1\\tiny-imagenet-200\\wnids.txt"
+WORDS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/words.txt"
+num_classes=200
 
 
 
@@ -245,7 +238,7 @@ class_names = [wnid_to_words[wnid] for wnid in wnids]
 
 
 # load in training data
-X_train = []
+X_train_data = []
 y_train = []
 image_index=[]
 
@@ -267,9 +260,9 @@ for file in os.listdir(TRAIN_PATH):
     j = os.path.join(h,"images")
     for files in os.listdir(j):
         k = os.path.join(j, files)
-        img = Image.open(k)
+        img = Image.open(k).convert('RGB')
         # print(np.array(img).shape)
-        X_train.append(np.array(img))
+        X_train_data.append(np.array(img))
         y_train.append(file)
         # if os.path.isfile(k):
         #     img = Image.open(k)
@@ -280,12 +273,12 @@ for file in os.listdir(TRAIN_PATH):
         #     X_train = np.asarray([X_train_numpy_data])
             # print(X_train.shape)
             # print(" x train ====== ", type(X_train))
-
-print(X_train)
-print(y_train)
+X_train = np.array(X_train_data)
+#print("X_TRAIN SHAPE : ", X_train.shape)
+#print("Y_TRAIN : ", y_train)
 
 #load in validation data
-X_val = []
+X_val_data = []
 y_val = []
 
 for filename in os.listdir(VAL_PATH):
@@ -293,7 +286,8 @@ for filename in os.listdir(VAL_PATH):
     if os.path.isfile(f):
         img = Image.open(os.path.join(VAL_PATH,filename)).convert('RGB')
         X_val_numpy_data = np.asarray(img)
-        X_val = np.asarray([X_val_numpy_data])
+        X_val_data = np.asarray([X_val_numpy_data])
+X_val = np.array(X_val_data)
 
 with open(VAL_ANNOTATIONS_PATH, "r") as file:
     val_y = file.readlines()
@@ -302,29 +296,34 @@ with open(VAL_ANNOTATIONS_PATH, "r") as file:
         val_label = words[1]
         y_val.append(val_label)
 
-print(X_val)
-print(y_val)
+#print("X_VAL : ", X_val)
+#print("Y_VAL : ", y_val)
 
 
 
 #load in testing data
-X_test = []
+X_test_data = []
 for file in os.listdir(TEST_PATH):
     h = os.path.join(TEST_PATH, file)
     if os.path.isfile(h):
-        img = Image.open(h)
+        img = Image.open(h).convert('RGB')
         X_test_numpy_data = asarray(img)
-        X_test.append(X_test_numpy_data)
+        X_test_data.append(X_test_numpy_data)
+X_test = np.array(X_test_data)
+#print("X_TEST : ", X_test)
 
-print(X_test)
 
+# Print number of Images
+print("X_TRAIN SHAPE : ", X_train.shape)
+print("X_VAL SHAPE : ", X_val.shape)
+print("X_TEST SHAPE : ", X_test.shape)
 
 # assert(X_train.shape[0] == y_train.shape[0]), "the number of training images is not equal to the number of training labels"
 # assert(X_val.shape[0] == y_val.shape[0]), "the number of validation images is not equal to the number of validation labels"
 # assert(X_test.shape[0] == y_test.shape[0]), "the number of test images is not equal to the number of test labels"
-# assert(X_train.shape[1:] == (64, 64, 3)), "the dimensions of the training images are not 32x32x3"
-# assert(X_val.shape[1:] == (64, 64, 3)), "the dimensions of the validation images are not 32x32x3"
-# assert(X_test.shape[1:] == (64, 64, 3)), "the dimensions of the test images are not 32x32x3"
+# assert(X_train.shape[1:] == (64, 64, 3)), "the dimensions of the training images are not 64x64x3"
+# assert(X_val.shape[1:] == (64, 64, 3)), "the dimensions of the validation images are not 64x64x3"
+# assert(X_test.shape[1:] == (64, 64, 3)), "the dimensions of the test images are not 64x64x3"
 
 # X_train = np.array(list(map(preprocessing, X_train))) #avoid loops and use maps
 # X_val = np.array(list(map(preprocessing, X_val)))
