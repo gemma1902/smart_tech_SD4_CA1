@@ -16,18 +16,17 @@ import requests
 from PIL import Image
 from numpy import asarray
 import cv2
-# import pickle
-# import pandas as pd
+import pandas as pd
 
 def grayscale(image):
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    image = cv2.cvtColor(image.astype('float32'), cv2.COLOR_RGB2GRAY)
     return image
 
 
 # Brightens the Image
 def equalize(image):
     # Only works on grayscaled images
-    image = cv2.equalizeHist(image)
+    image = cv2.equalizeHist(image.astype(np.uint8))
     return image
 
 
@@ -112,9 +111,7 @@ for file in os.listdir(TRAIN_PATH):
                 num_images = len(filenames)
 
 
-#images = np.ndarray(shape=(64, (64*64*3)))
 for file in os.listdir(TRAIN_PATH):
-    # print(y_train)
     h = os.path.join(TRAIN_PATH,file)
     j = os.path.join(h,"images")
     for files in os.listdir(j):
@@ -172,14 +169,14 @@ print("normalise: ", X_train)
 print(X_test)
 
 # Is Number of labels == number of images
-#assert(X_train.shape[0] == y_train.shape[0]), "the number of training images is not equal to the number of training labels"
-#assert(X_val.shape[0] == y_val.shape[0]), "the number of validation images is not equal to the number of validation labels"
-#assert(X_test.shape[0] == y_test.shape[0]), "the number of test images is not equal to the number of test labels"
+assert(X_train.shape[0] == y_train.shape[0]), "the number of training images is not equal to the number of training labels"
+assert(X_val.shape[0] == y_val.shape[0]), "the number of validation images is not equal to the number of validation labels"
+assert(X_test.shape[0] == y_test.shape[0]), "the number of test images is not equal to the number of test labels"
 
 # Check all images are 64 x 64
-#assert(X_train.shape[1:] == (64, 64, 3)), "the dimensions of the training images are not 64x64x3"
-#assert(X_val.shape[1:] == (64, 64, 3)), "the dimensions of the validation images are not 64x64x3"
-#assert(X_test.shape[1:] == (64, 64, 3)), "the dimensions of the test images are not 64x64x3"
+assert(X_train.shape[1:] == (64, 64, 3)), "the dimensions of the training images are not 64x64x3"
+assert(X_val.shape[1:] == (64, 64, 3)), "the dimensions of the validation images are not 64x64x3"
+assert(X_test.shape[1:] == (64, 64, 3)), "the dimensions of the test images are not 64x64x3"
 
 
 # Apply preprocessing method to every image
@@ -197,9 +194,5 @@ X_train = X_train.reshape(X_train.shape[0], 64, 64, 1)
 X_test = X_test.reshape(X_test.shape[0], 64, 64, 1)
 X_val = X_val.reshape(X_val.shape[0], 64, 64, 1)
 
-# One hot encode the labels
-y_train = to_categorical(y_train, num_classes)
-y_val = to_categorical(y_val, num_classes)
-
 #model = leNet_model()
-#print(model.summary())
+#print("MODEL SUMMARY : ", model.summary())
