@@ -166,12 +166,11 @@ X_train = X_train / 255
 X_test = X_test / 255
 
 print("normalise: ", X_train)
-print(X_test)
 
 # Is Number of labels == number of images
 assert(X_train.shape[0] == y_train.shape[0]), "the number of training images is not equal to the number of training labels"
 assert(X_val.shape[0] == y_val.shape[0]), "the number of validation images is not equal to the number of validation labels"
-assert(X_test.shape[0] == y_test.shape[0]), "the number of test images is not equal to the number of test labels"
+#assert(X_test.shape[0] == y_test.shape[0]), "the number of test images is not equal to the number of test labels"
 
 # Check all images are 64 x 64
 assert(X_train.shape[1:] == (64, 64, 3)), "the dimensions of the training images are not 64x64x3"
@@ -185,14 +184,14 @@ X_train = np.array(list(map(preprocessing, X_train))) #avoid loops and use maps
 X_val = np.array(list(map(preprocessing, X_val)))
 X_test = np.array(list(map(preprocessing, X_test)))
 
-plt.imshow(X_train[random.randint(0, len(X_train)-1)])
-plt.axis("off")
-plt.show()
-print(X_train.shape)
+#plt.imshow(X_train[random.randint(0, len(X_train)-1)])
+#plt.axis("off")
+#plt.show()
+#print(X_train.shape)
 
 X_train = X_train.reshape(X_train.shape[0], 64, 64, 1)
 X_test = X_test.reshape(X_test.shape[0], 64, 64, 1)
 X_val = X_val.reshape(X_val.shape[0], 64, 64, 1)
 
-#model = leNet_model()
-#print("MODEL SUMMARY : ", model.summary())
+model = leNet_model()
+print("MODEL SUMMARY : ", model.summary())
