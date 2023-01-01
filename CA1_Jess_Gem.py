@@ -161,6 +161,10 @@ print("X_TRAIN SHAPE : ", X_train.shape)
 print("X_VAL SHAPE : ", X_val.shape)
 print("X_TEST SHAPE : ", X_test.shape)
 
+#One hot encode labels 
+y_train = to_categorical(y_train, 10)
+# y_test = to_categorical(y_test, 10)
+
 #Normalise data
 X_train = X_train / 255
 X_test = X_test / 255
