@@ -162,8 +162,21 @@ print("X_VAL SHAPE : ", X_val.shape)
 print("X_TEST SHAPE : ", X_test.shape)
 
 #One hot encode labels 
-y_train = to_categorical(y_train, 10)
+# y_train = to_categorical(y_train, 10)
 # y_test = to_categorical(y_test, 10)
+
+#updated one hot encode
+
+res = [sub[1:] for sub in y_train]
+print(res)
+
+new_y_train = [int(x) for x in res]
+
+from sklearn.preprocessing import OneHotEncoder
+encoder = OneHotEncoder(categories='auto')
+
+new_y_train1 = np.array(new_y_train)
+one_hot_encoded_y_train = encoder.fit_transform(new_y_train1.reshape(-1,1))
 
 #Normalise data
 X_train = X_train / 255
