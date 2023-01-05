@@ -212,3 +212,12 @@ X_val = X_val.reshape(X_val.shape[0], 64, 64, 1)
 
 model = leNet_model()
 print("MODEL SUMMARY : ", model.summary())
+
+
+history = model.fit(X_train, one_hot_encoded_y_train.toarray(), validation_split=0.1, epochs=20, batch_size=100, verbose=1, shuffle=1)
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.legend(['loss', 'val_loss'])
+plt.title('loss')
+plt.xlabel('epochs')
+plt.show()
