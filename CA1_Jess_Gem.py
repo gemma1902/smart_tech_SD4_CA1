@@ -59,6 +59,23 @@ def leNet_model():
     model.compile(Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy']) #adam optimizer
     return model
 
+# def new_model():
+#     model = Sequential()
+#     model.add(Conv2D(60, (5, 5), input_shape=(64, 64, 1), activation='relu'))
+#     model.add(Conv2D(60, (5, 5), activation='relu'))
+#     model.add(MaxPooling2D(pool_size=(2, 2))) #14x14 = output
+#     model.add(Conv2D(30, (3, 3), activation='relu')) #12x12 = output
+#     model.add(Conv2D(30, (3, 3), activation='relu'))
+#     model.add(MaxPooling2D(pool_size=(2, 2))) #6x6 = output
+#     # model.add(Dropout(0.5))
+#     # flatten image before fully connected layer
+#     model.add(Flatten())
+#     model.add(Dense(500, activation='relu'))
+#     model.add(Dropout(0.5))  # helps with overfitting & forces all nodes to work
+#     model.add(Dense(num_classes, activation='softmax')) # softmax coz its a multiclass
+#     model.compile(Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy']) #adam optimizer
+#     return model
+
 
 DATA = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200"
 VAL_ANNOTATIONS_PATH = "F:\College\Year 4\Smart Tech\JessicaSavage_GemmaRegan_SmartTech_CA1/tiny-imagenet-200/val/val_annotations.txt"
