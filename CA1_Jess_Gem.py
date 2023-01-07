@@ -238,3 +238,7 @@ plt.legend(['loss', 'val_loss'])
 plt.title('loss')
 plt.xlabel('epochs')
 plt.show()
+
+
+# test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+# print('Test Accuracy:', test_accuracy[1])
